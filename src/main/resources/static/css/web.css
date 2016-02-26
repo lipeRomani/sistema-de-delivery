@@ -1,0 +1,52 @@
+/* Estilização do header navbar */
+.ws-navbar-header{
+    background-color: #800080 !important;
+    border: none !important;
+}
+
+.ws-navbar-header a{
+    color: white !important;
+}
+
+.ws-navbar-header a:hover{
+ background-color:#600060 !important;
+}
+
+.ws-drop-down-menu{
+  background-color:#600060 !important;
+}
+
+.ws-open > a:hover, .ws-open > a:focus{
+    background-color:#600060 !important;
+}
+
+.ws-open, .ws-open > a{
+    background-color: transparent !important;
+}
+
+.ws-drop-down-menu a:hover{
+    background-color: #800080 !important;
+}
+
+.ws-nav-text{
+    color: #fffeb5 !important;
+}
+
+.ws-nav-text:hover{
+    background-color: transparent !important;
+}
+
+/* FIM Estilização do header navbar */
+
+.ws-title-create-user{
+    color: white !important;
+    text-shadow: 2px 2px black;
+}
+
+.ws-subtitle-create-user{
+    color: white !important;
+    text-shadow: 1px 1px black;
+    font-size: 2em;
+}
+
+

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:fragment="includes">
+
+    <title>Cantinho da Marmita</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/web.css}" href="../../static/css/web.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" href="../../static/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../js/datepicker/jquery.datetimepicker.css" th:href="@{/js/datepicker/jquery.datetimepicker.css}" />
+    <script th:src="@{/js/jquery-2.2.1.min.js}" src="../../js/jquery-2.2.1.min.js" ></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}" src="../../bootstrap/js/bootstrap.min.js" ></script>
+    <script type="text/javascript" src="../../js/mask-money.js" th:src="@{/js/mask-money.js}"></script>
+    <script type="text/javascript" src="../../js/datepicker/jquery.datetimepicker.js" th:src="@{/js/datepicker/jquery.datetimepicker.js}"></script>
+    <script type="text/javascript" src="../../js/jquery.backstretch.min.js" th:src="@{/js/jquery.backstretch.min.js}"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.date-calendar').datetimepicker({
+                lang:'pt-BR',
+                closeOnWithoutClick:true,
+                i18n:{
+                    de:{
+                        months:[
+                            'Janeiro','Fevereiro','Março','Abril',
+                            'Maio','Junho','Julho','Agosto',
+                            'Septembro','Outubro','Novembro','Dezembro',
+                        ],
+                        dayOfWeek:[
+                            "Seg.", "Ter.", "Qua.", "Qui.",
+                            "Sex.", "Sab.", "Dom.",
+                        ]
+                    }
+                },
+                timepicker:false,
+                format:'d/m/Y'
+            });
+        })
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("input.money").maskMoney({showSymbol:false, symbol:"R$", decimal:",", thousands:"."});
+        });
+    </script>
+</head>
+<body>
+
+<div th:fragment="navbar">
+<nav class="navbar navbar-default ws-navbar-header">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Quem somos</a></li>
+                <li><a href="#">Como funciona?</a></li>
+                <li><a href="#">Contato</a></li>
+
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><p class="navbar-text ws-nav-text"><span class="glyphicon glyphicon-user"></span > Olá <span sec:authentication="name"></span></p></li>
+                <li class="dropdown ws-open">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Meu menu <span class="caret"></span></a>
+                    <ul class="dropdown-menu ws-drop-down-menu">
+                        <li><a href="#">Útimos pedidos</a></li>
+                        <li><a href="#">Alterar meus dados</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="dropdown ws-open" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu Administrativo <span class="caret"></span></a>
+                    <ul class="dropdown-menu ws-drop-down-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+</div> <!-- End navbar fragment -->
+
+</body>
+</html>
