@@ -7,12 +7,14 @@
 
 <div class="container ">
 
-    <div class="col-md-12">
-        <h1>Faça seu login</h1>
-    </div>
-
-
    <div class="col-md-5">
+
+       <h1>Faça seu login</h1>
+       <hr />
+
+       <div th:if="${error != null}">
+           <p class="alert alert-danger" th:text="${error}"></p>
+       </div>
 
         <form th:action="@{/login}" method="post">
             <div class="form-group">
@@ -27,16 +29,19 @@
 
             <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-user"></span> Entrar</button>
         </form>
-
-
+       <hr />
+       <p>Esqueceu sua senha? clique <a th:href="@{/recovery}">aqui</a></p>
     </div>
 
     <div class="col-md-1"></div>
 
     <div class="col-md-6">
+        <div class="jumbotron">
         <h2>Não é cadastrado?</h2>
-        <p>Não perca tempo! clique no botão abaixo e efetue seu cadastro para aproveitar nossa deliciosa comida!</p>
-        <button th:href="@{/join}" class="btn btn-success">Sou novo aqui</button>
+        <hr />
+        <p>Não perca tempo! Faça já seu cadastro!</p>
+        <a th:href="@{/join}" class="btn btn-warning">Criar cadastro</a>
+        </div>
     </div>
 
 </div>

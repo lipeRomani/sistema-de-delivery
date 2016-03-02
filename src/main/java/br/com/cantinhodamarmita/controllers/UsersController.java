@@ -12,14 +12,22 @@ import java.security.Principal;
 
 public interface UsersController {
 
-    String formCreateUser(Model model, Principal principal);
-    String createUser(User user, BindingResult result, Model model, RedirectAttributes redirectAttributes);
-    String updateUser(User user, BindingResult result, Model model, RedirectAttributes redirectAttributes);
+    String URL_CREATE_USER = "/join";
+    String URL_UPDATE_USER = "/update/me";
+    String URL_DETAIL_USER = "/detail/me";
+    String URL_LOGIN_USER = "/login";
+    String URL_LOGIN_FAIL_USER = "/login-fail";
+    String URL_REMOVE_USER = "/delete/me";
+    String URL_DASHBOARD_USER = "/me";
+
+    String createForm(Model model, Principal principal);
+    String createSubmit(User user, BindingResult result, Model model, RedirectAttributes redirectAttributes);
+    String updateForm(User user,Model model);
+    String updateSubmit(User user, BindingResult result, Model model, RedirectAttributes redirectAttributes);
     String usersList(UserFilter userFilter, Pageable pageable);
     String removeUser(User user, RedirectAttributes redirectAttributes);
-    String detailUserInformation(User user, Model model);
+    String userDetail(User user, Model model);
     String loginForm(Model model, Principal principal);
-    String loginSubmit();
     String dashBoard(User user,Model model);
 
 }

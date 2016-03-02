@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: includes"></head>
+<body>
+
+    <div th:include="fragments/header :: navbar"></div>
+
+    <div class="container">
+
+        <div class="col-md-12">
+            <h1>Meus dados pessoais</h1>
+            <hr />
+        </div>
+
+        <div class="col-md-3">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="#" th:href="@{/update/me}"><span class="glyphicon glyphicon-pencil"></span> Editar Meus dados</a>
+                </li>
+                <li class="list-group-item"><span class="glyphicon glyphicon-lock"></span>  Alterar senha</li>
+
+            </ul>
+        </div>
+
+        <div class="col-md-6">
+            <table class="table table-bordered">
+                <tr>
+                    <td>Nome: </td>
+                    <td th:text="${user.name}"></td>
+                </tr>
+
+                <tr>
+                    <td>E-mail: </td>
+                    <td th:text="${user.email}"></td>
+                </tr>
+                <tr>
+                    <td>Telefone: </td>
+                    <td th:text="${user.telephone}"></td>
+                </tr>
+                <tr>
+                    <td>Celular: </td>
+                    <td th:text="${user.cellphone}"></td>
+                </tr>
+                <tr>
+                    <td>Nascimento: </td>
+                    <td th:text="${#temporals.format(user.birthDate,'dd/MM/yyyy')}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

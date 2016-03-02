@@ -8,7 +8,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 public interface ProductsController {
 
-    String createProduct(Product product, BindingResult result, Model model, RedirectAttributes redirectAttributes);
+    String createProductForm(Model model);
+    String creatProductSubmit(Product product, BindingResult result, RedirectAttributes redirectAttributes, Model model);
     String updateProduct(Product product, BindingResult result, Model model, RedirectAttributes redirectAttributes);
     String changeAvailableDate(Product product, RedirectAttributes redirectAttributes);
     String changeStatus(Product product, RedirectAttributes redirectAttributes);

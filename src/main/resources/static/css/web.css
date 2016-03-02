@@ -36,6 +36,26 @@
     background-color: transparent !important;
 }
 
+.ws-btn-login{
+    border-color:#5f005f !important;
+    color: #fff !important;
+    background-color: #5f005f;
+}
+
+.ws-btn-login:hover{
+    background-color: #6d006d !important;
+}
+
+.ws-btn-join{
+    border-color:#fff !important;
+    color: #5f005f !important;
+    background-color: #fff;
+}
+
+.ws-btn-join:hover{
+    background-color: #eee !important;
+}
+
 /* FIM Estilização do header navbar */
 
 .ws-title-create-user{
@@ -48,5 +68,10 @@
     text-shadow: 1px 1px black;
     font-size: 2em;
 }
+
+.ws-margin-righ{
+    margin-right: 8px !important;
+}
+
 
 

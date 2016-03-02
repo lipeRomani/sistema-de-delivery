@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: includes"></head>
+<body>
+
+<div th:include="fragments/header :: navbar"></div>
+
+<div class="container">
+
+<div class="col-md-12">
+
+
+    <h1 class="text-center">Alterar dados de <span th:text="${user.name}"></span></h1>
+    <hr />
+
+    <div class="col-md-3"></div>
+
+    <div class="col-md-6">
+        <div class="jumbotron" th:style="'background: url(' + @{/img/bg-opacity.png} + ')'">
+            <form action="#" th:action="@{/update/me}" th:object="${user}" method="post" >
+                <div class="form-group">
+                    <label for="name">Nome <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="label label-danger"></spam></label>
+                    <input type="text" th:value="*{name}" th:field="*{name}" id="name" class="form-control" />
+                </div>
+
+
+                <div class="form-group">
+                    <label for="email">E-mail <span class="label label-info">obrigatório</span>
+                        <spam th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="label label-danger"></spam>
+                        <spam th:if="${#fields.hasErrors('${user}')}" th:each="err : ${#fields.errors('${user}')}" th:text="${err}" class="label label-danger">E-mail já existe</spam>
+                    </label>
+                    <input type="email" th:value="*{email}" th:field="*{email}" id="email" class="form-control" />
+                </div>
+
+
+                <div class="form-group">
+                    <label for="telephone">Telefone</label>
+                    <input type="text" th:value="*{telephone}" th:field="*{telephone}" id="telephone" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="cellphone">Celular <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('cellphone')}" th:errors="*{cellphone}" class="label label-danger"></spam></label>
+                    <input type="text" th:value="*{cellphone}" th:field="*{cellphone}" id="cellphone" class="form-control" />
+                </div>
+
+
+                <div class="form-group">
+                    <label for="birthDate">Data de Nascimento <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}" class="label label-danger"></spam></label>
+                    <input type="text" th:value="*{birthDate}" th:field="*{birthDate}" id="birthDate" class="form-control date-calendar" />
+                </div>
+
+
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Salvar alterações </button>
+                <a href="#" th:href="@{/detail/me}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar alterações </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-3"></div>
+</div>
+</div>
+</body>
+</html>

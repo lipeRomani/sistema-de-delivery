@@ -46,8 +46,9 @@
 <body>
 
 <div th:fragment="navbar">
+
 <nav class="navbar navbar-default ws-navbar-header">
-    <div class="container-fluid">
+    <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -68,29 +69,47 @@
 
             </ul>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li><p class="navbar-text ws-nav-text"><span class="glyphicon glyphicon-user"></span > Olá <span sec:authentication="name"></span></p></li>
-                <li class="dropdown ws-open">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Meu menu <span class="caret"></span></a>
-                    <ul class="dropdown-menu ws-drop-down-menu">
-                        <li><a href="#">Útimos pedidos</a></li>
-                        <li><a href="#">Alterar meus dados</a></li>
-                    </ul>
-                </li>
+            <div sec:authorize="isAnonymous()">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="ws-margin-righ">
+                        <form th:action="@{/login}" method="get">
+                            <button href="#" class="btn ws-btn-login navbar-btn">Entrar</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form th:action="@{/join}" method="get">
+                            <button href="#" class="btn ws-btn-join navbar-btn">Cadastrar-se</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+
+            <div sec:authorize="isAuthenticated()">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><p class="navbar-text ws-nav-text"><span class="glyphicon glyphicon-user"></span > Olá <span sec:authentication="name"></span></p></li>
+                    <li class="dropdown ws-open">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Meu menu <span class="caret"></span></a>
+                        <ul class="dropdown-menu ws-drop-down-menu">
+                            <li><a href="#">Útimos pedidos</a></li>
+                            <li><a href="#" th:href="@{/detail/me}"><span class="glyphicon glyphicon-info-sign"></span> Meus dados</a></li>
+                            <li><a href="#" th:href="@{/out}"><span class="glyphicon glyphicon-log-out"></span> Sair</a></li>
+                        </ul>
+                    </li>
 
 
-                <li class="dropdown ws-open" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu Administrativo <span class="caret"></span></a>
-                    <ul class="dropdown-menu ws-drop-down-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
+                    <li class="dropdown ws-open" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu Administrativo <span class="caret"></span></a>
+                        <ul class="dropdown-menu ws-drop-down-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
 
-            </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
