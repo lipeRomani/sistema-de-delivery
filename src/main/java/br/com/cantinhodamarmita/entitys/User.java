@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+@Component
 @Document(collection = "users")
 @Unique(primaryKey = "id",uniqueField = "email",service = UserServiceImp.class,message = "{user.email.unique}",groups = {ValidateGroup.onCreate.class, ValidateGroup.onUpdate.class})
 public class User implements UniqueEntity, UserDetails {

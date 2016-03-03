@@ -70,6 +70,21 @@ public class UsersControllerImp implements UsersController {
     }
 
     @Override
+    @RequestMapping(value = URL_CHANGE_PASSWORD, method = RequestMethod.GET)
+    public String updatePassword(Model model) {
+        model.addAttribute("updatePassword",new UpdatePasswordDto());
+        return "users/update-secret";
+    }
+
+    @Override
+    @RequestMapping(value = URL_CHANGE_PASSWORD, method = RequestMethod.POST)
+    public String updatePasswordSubmit(@Valid UpdatePasswordDto dto, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        System.out.println(dto);
+        model.addAttribute("updatePassword",dto);
+        return "users/update-secret";
+    }
+
+    @Override
     public String usersList(UserFilter userFilter, Pageable pageable) {
         return null;
     }
