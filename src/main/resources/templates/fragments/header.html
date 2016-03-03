@@ -88,11 +88,13 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><p class="navbar-text ws-nav-text"><span class="glyphicon glyphicon-user"></span > Olá <span sec:authentication="name"></span></p></li>
                     <li class="dropdown ws-open">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Meu menu <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-menu-hamburger"></span> Meu menu <span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu ws-drop-down-menu">
-                            <li><a href="#">Útimos pedidos</a></li>
-                            <li><a href="#" th:href="@{/detail/me}"><span class="glyphicon glyphicon-info-sign"></span> Meus dados</a></li>
-                            <li><a href="#" th:href="@{/out}"><span class="glyphicon glyphicon-log-out"></span> Sair</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-pushpin"></span> Pedidos</a></li>
+                            <li><a href="#" th:href="@{/detail/me}"><span class="glyphicon glyphicon-info-sign"></span> Dados Pessoais</a></li>
+                            <li><a href="#" th:href="@{/out}"><span class="glyphicon glyphicon-off"></span> Sair</a></li>
                         </ul>
                     </li>
 
