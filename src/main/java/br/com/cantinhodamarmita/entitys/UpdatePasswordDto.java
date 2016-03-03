@@ -1,10 +1,21 @@
 package br.com.cantinhodamarmita.entitys;
 
 
+import br.com.cantinhodamarmita.validators.CurrentPassword;
+import br.com.cantinhodamarmita.validators.FieldMatch;
+import org.hibernate.validator.constraints.NotBlank;
+
+@FieldMatch(first = "newPassword",second = "reNewPassword",message = "Senhas precisam ser iguais")
 public class UpdatePasswordDto {
 
+    @NotBlank
+    @CurrentPassword
     String olderPassword;
+
+    @NotBlank
     String newPassword;
+
+    @NotBlank
     String reNewPassword;
 
     public UpdatePasswordDto(String olderPassword, String newPassword, String reNewPassword) {

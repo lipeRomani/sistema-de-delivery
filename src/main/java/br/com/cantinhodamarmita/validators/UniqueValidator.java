@@ -22,6 +22,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
     private String primaryKeyValue;
     private Class<?> clazz;
     UniqueValidatorService validatorService;
+    private String errorMsg;
 
     @Override
     public void initialize(Unique unique) {
@@ -29,24 +30,35 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
         defaultMessage = unique.message();
         primaryKey = unique.primaryKey();
         validatorService = context.getBean(unique.service());
+        errorMsg = unique.message();
     }
 
     @Override
-    public boolean isValid(Object object, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(Object object, ConstraintValidatorContext context) {
         getValues(object);
 
         UniqueEntity uniqueEntity = validatorService.getUniqueEntity(uniqueFieldValue);
 
+        boolean toReturn = true;
+
         if(uniqueEntity != null){
             if(primaryKeyValue != null) {
                 if (primaryKeyValue.equals(uniqueEntity.getId()))
-                    return true;
+                    toReturn =  true;
                 else
-                    return false;
+                    toReturn = false;
+            }else{
+                toReturn = false;
             }
-            return false;
+
         }
-        return true;
+
+        if(!toReturn){
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(errorMsg).addNode(uniqueField).addConstraintViolation();
+        }
+
+        return toReturn;
     }
 
     private void getValues(Object o) {

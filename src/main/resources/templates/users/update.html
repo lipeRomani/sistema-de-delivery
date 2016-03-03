@@ -30,7 +30,6 @@
                 <div class="form-group">
                     <label for="email">E-mail <span class="label label-info">obrigatório</span>
                         <spam th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="label label-danger"></spam>
-                        <spam th:if="${#fields.hasErrors('${user}')}" th:each="err : ${#fields.errors('${user}')}" th:text="${err}" class="label label-danger">E-mail já existe</spam>
                     </label>
                     <input type="email" th:value="*{email}" th:field="*{email}" id="email" class="form-control" />
                 </div>

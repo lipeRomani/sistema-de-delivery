@@ -3,6 +3,7 @@ package br.com.cantinhodamarmita.entitys;
 
 import br.com.cantinhodamarmita.converters.LocalDateConverter;
 import br.com.cantinhodamarmita.services.UserServiceImp;
+import br.com.cantinhodamarmita.validators.FieldMatch;
 import br.com.cantinhodamarmita.validators.Unique;
 import br.com.cantinhodamarmita.validators.UniqueEntity;
 import br.com.cantinhodamarmita.validators.ValidateGroup;
@@ -23,7 +24,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
-@Component
 @Document(collection = "users")
 @Unique(primaryKey = "id",uniqueField = "email",service = UserServiceImp.class,message = "{user.email.unique}",groups = {ValidateGroup.onCreate.class, ValidateGroup.onUpdate.class})
 public class User implements UniqueEntity, UserDetails {
