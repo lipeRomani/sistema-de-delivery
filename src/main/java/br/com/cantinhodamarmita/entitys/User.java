@@ -5,6 +5,7 @@ import br.com.cantinhodamarmita.converters.LocalDateConverter;
 import br.com.cantinhodamarmita.services.UserServiceImp;
 import br.com.cantinhodamarmita.validators.Unique;
 import br.com.cantinhodamarmita.validators.UniqueEntity;
+import br.com.cantinhodamarmita.validators.ValidateGroup;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,26 +23,26 @@ import java.util.Collection;
 import java.util.List;
 
 @Document(collection = "users")
-@Unique(primaryKey = "id",uniqueField = "email",service = UserServiceImp.class,message = "{user.email.unique}")
+@Unique(primaryKey = "id",uniqueField = "email",service = UserServiceImp.class,message = "{user.email.unique}",groups = {ValidateGroup.onCreate.class, ValidateGroup.onUpdate.class})
 public class User implements UniqueEntity, UserDetails {
 
     @Id
     private String id;
 
-    @NotBlank
+    @NotBlank(groups = {ValidateGroup.onCreate.class, ValidateGroup.onUpdate.class})
     private String email;
 
-    @NotBlank
+    @NotBlank(groups = {ValidateGroup.onCreate.class, ValidateGroup.onPasswordUpdate.class})
     private String password;
-    @NotBlank
+    @NotBlank(groups = {ValidateGroup.onCreate.class, ValidateGroup.onUpdate.class})
     private String name;
     private Address address;
-    @NotBlank
+    @NotBlank(groups = {ValidateGroup.onCreate.class, ValidateGroup.onUpdate.class})
     private String cellphone;
     private String telephone;
 
     @LocalDateConverter
-    @NotNull
+    @NotNull(groups = {ValidateGroup.onCreate.class, ValidateGroup.onUpdate.class})
     private LocalDate birthDate;
     private List<Roles> roles;
 

@@ -8,5 +8,8 @@ public interface UserRepository extends MongoRepository<User,String> {
 
     User save(User user);
     User findByEmail(String email);
+    User findById(String id);
 
+    @Override
+    User insert(User user);
 }

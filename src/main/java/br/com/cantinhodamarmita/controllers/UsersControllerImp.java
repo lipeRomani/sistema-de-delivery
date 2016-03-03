@@ -2,12 +2,14 @@ package br.com.cantinhodamarmita.controllers;
 
 import br.com.cantinhodamarmita.entitys.*;
 import br.com.cantinhodamarmita.services.*;
+import br.com.cantinhodamarmita.validators.ValidateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -37,7 +39,7 @@ public class UsersControllerImp implements UsersController {
     public String createSubmit(@Valid User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
         if(!result.hasErrors()){
-            user = userService.createUser(user, new UserRoleConsumer());
+            user = userService.create(user, new UserRoleConsumer());
             userService.autenticateUser(user);
             return "redirect:" + URL_DASHBOARD_USER;
         }
@@ -55,8 +57,16 @@ public class UsersControllerImp implements UsersController {
 
     @Override
     @RequestMapping(value = URL_UPDATE_USER,method = RequestMethod.POST)
-    public String updateSubmit(User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        return "users/update";
+    public String updateSubmit(@Validated(value = {ValidateGroup.onUpdate.class}) User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+
+        if(result.hasErrors()){
+            model.addAttribute("user",user);
+            return "users/update";
+        }
+
+        userService.update(user);
+        redirectAttributes.addFlashAttribute("updateMsg","Seus dados foram atualizados");
+        return "redirect:/detail/me";
     }
 
     @Override

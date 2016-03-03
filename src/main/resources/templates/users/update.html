@@ -18,6 +18,9 @@
     <div class="col-md-6">
         <div class="jumbotron" th:style="'background: url(' + @{/img/bg-opacity.png} + ')'">
             <form action="#" th:action="@{/update/me}" th:object="${user}" method="post" >
+
+                <input type="hidden" th:value="*{id}" th:field="*{id}" />
+
                 <div class="form-group">
                     <label for="name">Nome <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="label label-danger"></spam></label>
                     <input type="text" th:value="*{name}" th:field="*{name}" id="name" class="form-control" />

@@ -1,14 +1,17 @@
 package br.com.cantinhodamarmita.services;
 
 
+import br.com.cantinhodamarmita.daos.UserDao;
 import br.com.cantinhodamarmita.entitys.User;
 import br.com.cantinhodamarmita.exceptions.AuthenticationCredentialsNotPresent;
 import br.com.cantinhodamarmita.repositories.UserRepository;
 import br.com.cantinhodamarmita.validators.UniqueValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,18 +22,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImp implements UserService, UniqueValidatorService, UserDetailsService {
 
-    private UserRepository userRepository;
+    private UserDao userDao;
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImp(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override
-    public User createUser(User user, UserRole userRole) {
+    public User create(User user, UserRole userRole) {
         user = userRole.apply(user);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return userRepository.save(user);
+        return userDao.save(user);
     }
 
     @Override
@@ -39,18 +42,30 @@ public class UserServiceImp implements UserService, UniqueValidatorService, User
         if(user.getEmail() == null || user.getPassword() == null)
             throw new AuthenticationCredentialsNotPresent("Email ou senha são nulos");
 
-        Authentication token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(token);
+        Authentication token = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(token);
     }
 
+    @Override
+    public User update(User user) {
+        user = userDao.update(user);
+        autenticateUser(user); //refresh Principal in security context
+        return user;
+    }
+
+    @Override
+    public User findById(String id) {
+        return userDao.findById(id);
+    }
 
     @Override
     public User getUniqueEntity(String field) {
-        return userRepository.findByEmail(field);
+        return userDao.findByEmail(field);
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userRepository.findByEmail(s);
+        return userDao.findByEmail(s);
     }
 }
