@@ -9,7 +9,7 @@ public interface UserDao {
 
     User save(User user);
     User update(User user);
-    User updatePassword(UpdatePasswordDto updatePasswordDto);
+    User updatePassword(UpdatePasswordDto updatePasswordDto, String userId);
     User findById(String id);
     User findByEmail(String email);
 }

@@ -5,7 +5,9 @@ import br.com.cantinhodamarmita.validators.CurrentPassword;
 import br.com.cantinhodamarmita.validators.FieldMatch;
 import org.hibernate.validator.constraints.NotBlank;
 
-@FieldMatch(first = "newPassword",second = "reNewPassword",message = "Senhas precisam ser iguais")
+@FieldMatch.List({
+        @FieldMatch(first = "newPassword",second = "reNewPassword",message = "Senhas precisam ser iguais")
+})
 public class UpdatePasswordDto {
 
     @NotBlank

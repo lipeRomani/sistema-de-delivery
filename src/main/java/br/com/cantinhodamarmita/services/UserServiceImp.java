@@ -2,6 +2,7 @@ package br.com.cantinhodamarmita.services;
 
 
 import br.com.cantinhodamarmita.daos.UserDao;
+import br.com.cantinhodamarmita.entitys.UpdatePasswordDto;
 import br.com.cantinhodamarmita.entitys.User;
 import br.com.cantinhodamarmita.exceptions.AuthenticationCredentialsNotPresent;
 import br.com.cantinhodamarmita.validators.UniqueValidatorService;
@@ -58,6 +59,14 @@ public class UserServiceImp implements UserService, UniqueValidatorService, User
     }
 
     @Override
+    public void changeSecret(UpdatePasswordDto dto) {
+        dto.setNewPassword(new BCryptPasswordEncoder().encode(dto.getNewPassword()));
+        User principal = getPrincipal();
+        User user = userDao.updatePassword(dto, principal.getId());
+        autenticateUser(user); //Refresh Principal in security context
+    }
+
+    @Override
     public User getUniqueEntity(String field) {
         return userDao.findByEmail(field);
     }
@@ -65,5 +74,9 @@ public class UserServiceImp implements UserService, UniqueValidatorService, User
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return userDao.findByEmail(s);
+    }
+
+    private User getPrincipal(){
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

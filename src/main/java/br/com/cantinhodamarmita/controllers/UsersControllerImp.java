@@ -85,6 +85,8 @@ public class UsersControllerImp implements UsersController {
             return "users/update-secret";
         }
 
+        userService.changeSecret(dto);
+        redirectAttributes.addFlashAttribute("updateMsg","Senha atualizada");
         return "redirect:/detail/me";
     }
 

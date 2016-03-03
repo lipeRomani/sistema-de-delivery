@@ -1,6 +1,7 @@
 package br.com.cantinhodamarmita.services;
 
 
+import br.com.cantinhodamarmita.entitys.UpdatePasswordDto;
 import br.com.cantinhodamarmita.entitys.User;
 
 public interface UserService {
@@ -9,5 +10,5 @@ public interface UserService {
     public void autenticateUser(User user);
     public User update(User user);
     public User findById(String id);
-
+    void changeSecret(UpdatePasswordDto dto);
 }

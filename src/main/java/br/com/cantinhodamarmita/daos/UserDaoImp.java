@@ -46,8 +46,10 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User updatePassword(UpdatePasswordDto updatePasswordDto) {
-        return null;
+    public User updatePassword(UpdatePasswordDto dto, String userId) {
+        Query query = new Query(Criteria.where("_id").is(userId));
+        Update update = new Update().set("password", dto.getNewPassword());
+        return mongoOperations.findAndModify(query,update,new FindAndModifyOptions().returnNew(true),User.class);
     }
 
     @Override
