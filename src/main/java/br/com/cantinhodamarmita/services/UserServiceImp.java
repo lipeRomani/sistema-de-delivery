@@ -16,7 +16,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class UserServiceImp implements UserService, UniqueValidatorService, UserDetailsService {
@@ -67,6 +71,15 @@ public class UserServiceImp implements UserService, UniqueValidatorService, User
     }
 
     @Override
+    public boolean remove(User user, HttpServletRequest request, HttpServletResponse response) {
+        boolean deleted = userDao.delete(user);
+        if(deleted){
+            logout(request,response);
+        }
+        return deleted;
+    }
+
+    @Override
     public User getUniqueEntity(String field) {
         return userDao.findByEmail(field);
     }
@@ -78,5 +91,13 @@ public class UserServiceImp implements UserService, UniqueValidatorService, User
 
     private User getPrincipal(){
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    private void logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 }

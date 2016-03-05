@@ -61,4 +61,10 @@ public class UserDaoImp implements UserDao {
     public User findByEmail(String email) {
         return repository.findByEmail(email);
     }
+
+    @Override
+    public boolean delete(User user) {
+        long matchs = repository.deleteById(user.getId());
+        return matchs > 0;
+    }
 }

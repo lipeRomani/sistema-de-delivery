@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -36,7 +38,7 @@ public class UsersControllerImp implements UsersController {
 
     @Override
     @RequestMapping(value = URL_CREATE_USER, method = RequestMethod.POST)
-    public String createSubmit(@Valid User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    public String createSubmit(@Validated({ValidateGroup.onCreate.class}) User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
         if(!result.hasErrors()){
             user = userService.create(user, new UserRoleConsumer());
@@ -65,7 +67,7 @@ public class UsersControllerImp implements UsersController {
         }
 
         userService.update(user);
-        redirectAttributes.addFlashAttribute("updateMsg","Seus dados foram atualizados");
+        redirectAttributes.addFlashAttribute("success","Seus dados foram atualizados");
         return "redirect:/detail/me";
     }
 
@@ -86,7 +88,7 @@ public class UsersControllerImp implements UsersController {
         }
 
         userService.changeSecret(dto);
-        redirectAttributes.addFlashAttribute("updateMsg","Senha atualizada");
+        redirectAttributes.addFlashAttribute("success","Senha atualizada");
         return "redirect:/detail/me";
     }
 
@@ -96,9 +98,19 @@ public class UsersControllerImp implements UsersController {
     }
 
     @Override
-    @RequestMapping(value = URL_REMOVE_USER, method = RequestMethod.POST)
-    public String removeUser(User user, RedirectAttributes redirectAttributes) {
-        return null;
+    @RequestMapping(value = URL_REMOVE_USER, method = RequestMethod.GET)
+    public String removeUser(@AuthenticationPrincipal User user, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        if(user == null) return "redirect:/";
+
+        String username = user.getName();
+        if(userService.remove(user,request, response)) {
+            model.addAttribute("username",username);
+            return "users/remove-land";
+        }
+
+        redirectAttributes.addFlashAttribute("error","Falha ao remover seu usuário, tente mais tarde");
+        return "redirect:" + URL_DETAIL_USER;
     }
 
     @Override

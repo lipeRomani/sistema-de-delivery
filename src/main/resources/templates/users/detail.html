@@ -8,21 +8,19 @@
     <div class="container">
 
         <div class="col-md-12">
-            <p class="alert alert-success" th:if="${updateMsg != null}" th:text="${updateMsg}"></p>
+            <p class="alert alert-success" th:if="${success != null}" th:text="${success}"></p>
+            <p class="alert alert-danger" th:if="${error != null}" th:text="${error}"></p>
             <h1>Meus dados pessoais</h1>
             <hr />
         </div>
 
         <div class="col-md-3">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="#" th:href="@{/update/me}"><span class="glyphicon glyphicon-pencil"></span> Editar Meus dados</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#" th:href="@{/change/secret}"><span class="glyphicon glyphicon-lock"></span>  Alterar senha</a>
-                </li>
-
-            </ul>
+            <div class="list-group">
+                <a class="list-group-item" href="#" th:href="@{/add/address}"><span class="glyphicon glyphicon-home"></span>  Adicionar endereço</a>
+                <a class="list-group-item" href="#" th:href="@{/update/me}"><span class="glyphicon glyphicon-pencil"></span> Editar Meus dados</a>
+                <a class="list-group-item" href="#" th:href="@{/change/secret}"><span class="glyphicon glyphicon-lock"></span>  Alterar senha</a>
+                <a class="list-group-item list-group-item-danger" href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove" data-toggle="modal" data-target="#myModal"></span>  Excluir conta</a>
+            </div>
         </div>
 
         <div class="col-md-6">
@@ -54,3 +52,30 @@
 
 </body>
 </html>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Deseja excluir sua conta?</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Ao excluir sua conta todos os dados e históricos serão perdidos, deseja realmente excluir sua conta?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Não excluir!</button>
+                <button type="button" class="btn btn-danger" id="excluir">Ok! Pode excluir!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#excluir").click(function(){
+        window.location.href = "/remove/me";
+    });
+</script>

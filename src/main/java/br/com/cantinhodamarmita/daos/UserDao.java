@@ -12,4 +12,5 @@ public interface UserDao {
     User updatePassword(UpdatePasswordDto updatePasswordDto, String userId);
     User findById(String id);
     User findByEmail(String email);
+    boolean delete(User user);
 }
