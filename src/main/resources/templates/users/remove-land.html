@@ -6,7 +6,10 @@
 <div th:include="fragments/header :: navbar"></div>
 
 <div class="container">
-    <h1 class="text-center"><span th:if="${username != null}" th:text="${username}"></span> lamentamos que tenha excluido sua conta</h1>
+    <p class="text-center">
+        <img src="../../img/sad_remove_account.png" th:src="@{/img/sad_remove_account.png}" />
+    </p>
+    <h1 class="text-center"><span th:if="${username != null}" th:text="${username}"></span>, lamentamos que tenha excluido sua conta</h1>
     <p class="text-center">Apesar de suas informações terem sido apagadas, nunca é tarde para recomeçar!</p>
     <p class="text-center">Esperamos que você volte.</p>
     <p class="text-center">Clique <a href="#" th:href="@{/}">aqui</a> para voltar a navegação do site.</p>

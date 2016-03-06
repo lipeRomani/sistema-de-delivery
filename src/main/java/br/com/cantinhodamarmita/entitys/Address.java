@@ -1,19 +1,27 @@
 package br.com.cantinhodamarmita.entitys;
 
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+
 
 public class Address {
-    private String number;
-    private String street;
-    private String complement;
-    private String state;
-    private String city;
 
-    @DBRef
-    private District district;
+    @NotBlank
+    private String number;
+    @NotBlank
+    private String street;
+    @NotBlank
+    private String complement;
+    @NotNull
+    @DBRef private District district;
+    private String stateName;
+    private String cityName;
+    private String districtName;
+
 
     public Address(){
         this.district = new District();
@@ -51,19 +59,27 @@ public class Address {
         this.street = street;
     }
 
-    public String getState() {
-        return state;
+    public String getStateName() {
+        return stateName;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 
-    public String getCity() {
-        return city;
+    public String getCityName() {
+        return cityName;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
     }
 }

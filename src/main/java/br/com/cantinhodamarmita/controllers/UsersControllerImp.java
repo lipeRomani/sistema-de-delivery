@@ -24,6 +24,8 @@ public class UsersControllerImp implements UsersController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private StateService stateService;
 
     @Override
     @RequestMapping(value = URL_CREATE_USER, method = RequestMethod.GET)
@@ -141,5 +143,37 @@ public class UsersControllerImp implements UsersController {
     public String dashBoard(@AuthenticationPrincipal User user, Model model) {
 
         return "users/dashboard";
+    }
+
+    @Override
+    @RequestMapping(value = URL_ADD_ADDRESS_USER, method = RequestMethod.GET)
+    public String createAddressForm(Model model) {
+        model.addAttribute("address",new Address())
+                .addAttribute("states",stateService.findAll());
+        return "users/add-address";
+    }
+
+    @Override
+    @RequestMapping(value = URL_ADD_ADDRESS_USER, method = RequestMethod.POST)
+    public String createAddressSubmit(@AuthenticationPrincipal User user,
+                                      @Valid Address address,
+                                      BindingResult result,
+                                      Model model,
+                                      RedirectAttributes redirectAttributes) {
+
+        model.addAttribute("address",address)
+                .addAttribute("states",stateService.findAll());
+
+        return "users/add-address";
+    }
+
+    @Override
+    public String updateAddressForm(Model model) {
+        return null;
+    }
+
+    @Override
+    public String updateAddressSubmit(User user, Address address, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        return null;
     }
 }

@@ -1,17 +1,27 @@
 package br.com.cantinhodamarmita.entitys;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
 
 @Document(collection = "districts")
 public class District {
 
     @Id
+    private String id;
+
+    @NotBlank
     private String name;
+
+    @NotEmpty
     private double deliveryTax;
 
     @DBRef
+    @NotNull
     private City city;
 
     public District(){

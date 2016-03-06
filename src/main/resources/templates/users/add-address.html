@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: includes"></head>
+<body>
+
+<div th:include="fragments/header :: navbar"></div>
+
+<div class="container">
+
+<div class="col-md-12">
+
+
+    <h1 class="text-center">Adicionar endereço para entrega</h1>
+    <hr />
+
+    <div class="col-md-3"></div>
+
+    <div class="col-md-6">
+        <div class="jumbotron" th:style="'background: url(' + @{/img/bg-opacity.png} + ')'">
+            <form action="#" th:action="@{/add/address}" th:object="${address}" method="post" >
+
+
+                <div class="form-group">
+                    <label for="state">Estado <span class="label label-info">obrigatório</span></label>
+                    <select th:type="state" id="state" class="form-control">
+                        <option>-- Seleciona um estado --</option>
+                        <option th:each="s : ${states}" th:value="${s.uf}" th:text="${s.name}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">Cidade <span class="label label-info">obrigatório</span></label>
+                    <select th:type="city" id="city" name="city" class="form-control" disabled="disabled">
+                        <option>-- Seleciona uma cidade --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="district">Bairro <span class="label label-info">obrigatório</span></label>
+                    <select th:type="district" id="district" name="district" class="form-control" disabled="disabled">
+                        <option>-- Seleciona um bairro --</option>
+                    </select>
+                </div>
+
+                <hr />
+
+                <div class="form-group">
+                    <label for="street">Rua <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="label label-danger"></spam></label>
+                    <input type="text" th:value="*{street}" th:field="*{street}" id="street" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="number">Número <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('number')}" th:errors="*{number}" class="label label-danger"></spam></label>
+                    <input type="text" th:value="*{number}" th:field="*{number}" id="number" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="complement">Complemento <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('complement')}" th:errors="*{complement}" class="label label-danger"></spam></label>
+                    <input type="text" th:value="*{complement}" th:field="*{complement}" id="complement" class="form-control" />
+                </div>
+
+
+
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Adicionar endereço</button>
+                <a href="#" th:href="@{/detail/me}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-3"></div>
+</div>
+</div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function(){
+
+        var stateCombo = $("#state");
+        var cityCombo = $("#city");
+        var districtCombo = $("#district");
+
+        stateCombo.change(function () {
+            var valueState = stateCombo.val();
+            var url = "/city/combo/" + valueState;
+            $.get(url,function(data){
+                cityCombo.attr({"disabled":false});
+                cityCombo.html(data);
+            })
+        })
+
+
+
+    });
+</script>

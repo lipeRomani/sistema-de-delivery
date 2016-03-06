@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface UserService {
 
-    public User create(User user, UserRole userRole);
-    public void autenticateUser(User user);
-    public User update(User user);
-    public User findById(String id);
+    User create(User user, UserRole userRole);
+    void autenticateUser(User user);
+    User update(User user);
+    User findById(String id);
     void changeSecret(UpdatePasswordDto dto);
-    public boolean remove(User user, HttpServletRequest request, HttpServletResponse response);
+    boolean remove(User user, HttpServletRequest request, HttpServletResponse response);
 }

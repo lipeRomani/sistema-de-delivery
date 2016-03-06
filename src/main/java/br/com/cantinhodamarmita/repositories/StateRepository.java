@@ -4,6 +4,8 @@ package br.com.cantinhodamarmita.repositories;
 import br.com.cantinhodamarmita.entitys.State;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
+
 public interface StateRepository extends MongoRepository<State, String> {
 
     @Override
@@ -11,4 +13,7 @@ public interface StateRepository extends MongoRepository<State, String> {
 
     @Override
     State findOne(String s);
+
+    @Override
+    List<State> findAll();
 }

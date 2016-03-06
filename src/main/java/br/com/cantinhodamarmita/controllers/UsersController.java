@@ -1,9 +1,11 @@
 package br.com.cantinhodamarmita.controllers;
 
 
+import br.com.cantinhodamarmita.entitys.Address;
 import br.com.cantinhodamarmita.entitys.UpdatePasswordDto;
 import br.com.cantinhodamarmita.entitys.User;
 import br.com.cantinhodamarmita.entitys.UserFilter;
+import br.com.cantinhodamarmita.services.StateService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
@@ -24,6 +26,7 @@ public interface UsersController {
     String URL_LOGIN_FAIL_USER = "/login-fail";
     String URL_REMOVE_USER = "/remove/me";
     String URL_DASHBOARD_USER = "/me";
+    String URL_ADD_ADDRESS_USER = "/add/address";
 
     String createForm(Model model, Principal principal);
     String createSubmit(User user, BindingResult result, Model model, RedirectAttributes redirectAttributes);
@@ -36,5 +39,12 @@ public interface UsersController {
     String userDetail(User user, Model model);
     String loginForm(Model model, Principal principal);
     String dashBoard(User user,Model model);
+
+
+    String createAddressForm(Model model);
+    String createAddressSubmit(User user, Address address, BindingResult result, Model model, RedirectAttributes redirectAttributes);
+    String updateAddressForm(Model model);
+    String updateAddressSubmit(User user, Address address, BindingResult result, Model model, RedirectAttributes redirectAttributes);
+
 
 }

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+
+</head>
+<body>
+
+    <select >
+        <option>-- Selecione uma cidade --</option>
+        <option th:fragment="options-citys" th:if="${citys != null}" th:each="c : ${citys}" th:value="${c.name}" th:text="${c.name}"></option>
+    </select>
+
+</body>
+</html>
