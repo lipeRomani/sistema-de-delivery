@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +23,10 @@ import java.security.Principal;
 @Controller
 public class UsersControllerImp implements UsersController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private StateService stateService;
+    @Autowired private UserService userService;
+    @Autowired private StateService stateService;
+    @Autowired private CityService cityService;
+    @Autowired private DistrictService districtService;
 
     @Override
     @RequestMapping(value = URL_CREATE_USER, method = RequestMethod.GET)
@@ -118,6 +119,7 @@ public class UsersControllerImp implements UsersController {
     @Override
     @RequestMapping(value = URL_DETAIL_USER, method = RequestMethod.GET)
     public String userDetail(@AuthenticationPrincipal User user, Model model) {
+        user = userService.findById(user.getId());
         model.addAttribute("user",user);
         return "users/detail";
     }
@@ -148,23 +150,33 @@ public class UsersControllerImp implements UsersController {
     @Override
     @RequestMapping(value = URL_ADD_ADDRESS_USER, method = RequestMethod.GET)
     public String createAddressForm(Model model) {
-        model.addAttribute("address",new Address())
-                .addAttribute("states",stateService.findAll());
+        model.addAttribute("addressDto",new AddressDto())
+                .addAttribute("states",stateService.findAll())
+                .addAttribute("types",Address.Type.values());
         return "users/add-address";
     }
 
     @Override
     @RequestMapping(value = URL_ADD_ADDRESS_USER, method = RequestMethod.POST)
     public String createAddressSubmit(@AuthenticationPrincipal User user,
-                                      @Valid Address address,
+                                      @Valid AddressDto addressDto,
                                       BindingResult result,
                                       Model model,
                                       RedirectAttributes redirectAttributes) {
 
-        model.addAttribute("address",address)
-                .addAttribute("states",stateService.findAll());
+        if(result.hasErrors()){
+            model.addAttribute("addressDto",addressDto)
+                    .addAttribute("states",stateService.findAll())
+                    .addAttribute("citys",cityService.findByStateId(addressDto.getStateId()))
+                    .addAttribute("districts",districtService.getAllByCityName(addressDto.getCityId()))
+                    .addAttribute("types",Address.Type.values());
 
-        return "users/add-address";
+            return "users/add-address";
+        }
+        userService.addAdress(user,addressDto);
+        redirectAttributes.addFlashAttribute("success","Endereço cadastrado com sucesso!");
+        return "redirect:" + URL_DETAIL_USER;
+
     }
 
     @Override
@@ -173,7 +185,19 @@ public class UsersControllerImp implements UsersController {
     }
 
     @Override
-    public String updateAddressSubmit(User user, Address address, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    public String updateAddressSubmit(User user, AddressDto addressDto, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         return null;
+    }
+
+    @Override
+    @RequestMapping(value = URL_REMOVE_ADDRESS, method = RequestMethod.POST)
+    public String removeAddress(@RequestParam("position") int position,@AuthenticationPrincipal User user, RedirectAttributes redirectAttributes) {
+        boolean removeAddress = userService.removeAddress(user, position);
+        if(removeAddress)
+            redirectAttributes.addFlashAttribute("success","Endereço removido");
+        else
+            redirectAttributes.addFlashAttribute("error","Erro ao remover endereço, tente mais tarde");
+
+        return "redirect:" + URL_DETAIL_USER;
     }
 }

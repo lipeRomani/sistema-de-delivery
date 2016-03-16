@@ -83,4 +83,6 @@ public class Order {
     public enum Status{
         NOVO,EM_PRODUCAO, ENVIADO, RECEBIDO, CANCELADO;
     }
+
+
 }

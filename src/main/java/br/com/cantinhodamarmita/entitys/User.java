@@ -38,7 +38,7 @@ public class User implements UniqueEntity, UserDetails {
     private String password;
     @NotBlank(groups = {ValidateGroup.onCreate.class, ValidateGroup.onUpdate.class})
     private String name;
-    private Address address;
+    private List<Address> addresses;
     @NotBlank(groups = {ValidateGroup.onCreate.class, ValidateGroup.onUpdate.class})
     private String cellphone;
     private String telephone;
@@ -48,11 +48,13 @@ public class User implements UniqueEntity, UserDetails {
     private LocalDate birthDate;
     private List<Roles> roles;
 
-    public User(String email, String password, String name, Address address, String cellphone, String telephone, LocalDate birthDate, List<Roles> roles) {
+    public User(String id, String email, String password, String name, List<Address> addresses, String cellphone, String telephone, LocalDate birthDate, List<Roles> roles) {
+        this();
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
-        this.address = address;
+        this.addresses = addresses;
         this.cellphone = cellphone;
         this.telephone = telephone;
         this.birthDate = birthDate;
@@ -61,6 +63,7 @@ public class User implements UniqueEntity, UserDetails {
 
     public User(){
         this.setRoles(new ArrayList<>());
+        this.setAddresses(new ArrayList<>());
     }
 
     public String getId() {
@@ -125,12 +128,12 @@ public class User implements UniqueEntity, UserDetails {
         this.name = name;
     }
 
-    public Address getAddress() {
-        return address;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     public String getCellphone() {

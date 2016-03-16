@@ -13,36 +13,69 @@
     <h1 class="text-center">Adicionar endereço para entrega</h1>
     <hr />
 
-    <div class="col-md-3"></div>
+    <div class="col-md-2"></div>
 
     <div class="col-md-6">
-        <div class="jumbotron" th:style="'background: url(' + @{/img/bg-opacity.png} + ')'">
-            <form action="#" th:action="@{/add/address}" th:object="${address}" method="post" >
-
+            <form action="#" th:action="@{/add/address}" th:object="${addressDto}" method="post" >
 
                 <div class="form-group">
-                    <label for="state">Estado <span class="label label-info">obrigatório</span></label>
-                    <select th:type="state" id="state" class="form-control">
-                        <option>-- Seleciona um estado --</option>
-                        <option th:each="s : ${states}" th:value="${s.uf}" th:text="${s.name}"></option>
-                    </select>
+
+                    <label for="name">
+                        Titulo <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="De um titulo para este endereço, assim poderemos organizar melhor seus endereços para você. Ex.: Minha casa, Trabalho, Casa da vó"></span>
+                        <span class="label label-info">obrigatório</span>
+                        <spam th:if="${#fields.hasErrors('street')}" th:errors="*{name}" class="label label-danger"></spam>
+                    </label>
+                    <input type="text" th:value="*{name}" th:field="*{name}" id="name" class="form-control" />
                 </div>
 
                 <div class="form-group">
-                    <label for="city">Cidade <span class="label label-info">obrigatório</span></label>
-                    <select th:type="city" id="city" name="city" class="form-control" disabled="disabled">
-                        <option>-- Seleciona uma cidade --</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="district">Bairro <span class="label label-info">obrigatório</span></label>
-                    <select th:type="district" id="district" name="district" class="form-control" disabled="disabled">
-                        <option>-- Seleciona um bairro --</option>
+                    <label for="type">
+                        Tipo do endereço <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Selecione qual o tipo do seu endereço, eles nos ajudará a melhorar nossa qualidade de atendimento."></span>
+                        <span class="label label-info">obrigatório</span>
+                        <spam th:if="${#fields.hasErrors('stateId')}" th:errors="*{type}" class="label label-danger"></spam>
+                    </label>
+                    <select th:type="*{type}" id="type" name="type" class="form-control">
+                        <option value="">-- Seleciona o tipo --</option>
+                        <option th:each="t : ${types}" th:value="${t}" th:text="${t.description}" th:selected="(${t} == *{type})"></option>
                     </select>
                 </div>
 
                 <hr />
+
+                <div class="form-group">
+                    <label for="stateId">Estado <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('stateId')}" th:errors="*{stateId}" class="label label-danger"></spam></label>
+                    <select th:type="*{stateId}" id="stateId" name="stateId" class="form-control">
+                        <option value="">-- Seleciona um estado --</option>
+                        <option th:each="s : ${states}" th:value="${s.uf}" th:text="${s.name}" th:selected="(${s.uf} == *{stateId})"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cityId">Cidade <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('cityId')}" th:errors="*{cityId}" class="label label-danger"></spam></label>
+                    <select th:type="*{cityId}" id="cityId" name="cityId" class="form-control" th:disabled="${citys == null}">
+                        <option value="">-- Seleciona uma cidade --</option>
+                        <option th:if="${citys != null}" th:each="c : ${citys}" th:value="${c.name}" th:text="${c.name}" th:selected="(${c.name} == *{cityId})"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="districtId">
+                        Bairro / Condomínio <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Selecione o bairro ou condomínio corretamente, a taxa de entrega será baseada nessa informação, caso seu bairro / condomínio não esteja aqui, entre em contato conosco."></span>
+                        <span class="label label-info">obrigatório</span>
+                        <spam th:if="${#fields.hasErrors('districtId')}" th:errors="*{districtId}" class="label label-danger"></spam>
+                    </label>
+                    <select th:type="*{districtId}" id="districtId" name="districtId" class="form-control" th:disabled="${districts == null}">
+                        <option value="">-- Seleciona um bairro --</option>
+                        <option th:if="${districts != null}" th:each="d : ${districts}" th:value="${d.id}" th:text="${d.name}" th:selected="(${d.id} == *{districtId})"></option>
+                    </select>
+                </div>
+
+                <hr />
+
+                <div class="form-group">
+                    <label for="cep">Cep <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('street')}" th:errors="*{cep}" class="label label-danger"></spam></label>
+                    <input type="text" th:value="*{cep}" th:field="*{cep}" id="cep" class="form-control" />
+                </div>
 
                 <div class="form-group">
                     <label for="street">Rua <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="label label-danger"></spam></label>
@@ -55,7 +88,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="complement">Complemento <span class="label label-info">obrigatório</span> <spam th:if="${#fields.hasErrors('complement')}" th:errors="*{complement}" class="label label-danger"></spam></label>
+                    <label for="complement">Complemento <spam th:if="${#fields.hasErrors('complement')}" th:errors="*{complement}" class="label label-danger"></spam></label>
                     <input type="text" th:value="*{complement}" th:field="*{complement}" id="complement" class="form-control" />
                 </div>
 
@@ -64,10 +97,17 @@
                 <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> Adicionar endereço</button>
                 <a href="#" th:href="@{/detail/me}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
             </form>
-        </div>
     </div>
 
-    <div class="col-md-3"></div>
+    <div class="col-md-4">
+        <hr class="divider hidden-md hidden-lg" />
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3><span class="glyphicon glyphicon-info-sign"></span> Região de atendimento</h3>
+                <p>Caso seu estado, cidade ou bairro não esteja na lista é por que infelizmente ainda não atendemos sua região, mas fique de olho em nossa pagina do facebook, pois estamos em constante crescimento!</p>
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 </body>
@@ -76,20 +116,39 @@
 <script>
     $(document).ready(function(){
 
-        var stateCombo = $("#state");
-        var cityCombo = $("#city");
-        var districtCombo = $("#district");
+        var stateCombo = $("#stateId");
+        var cityCombo = $("#cityId");
+        var districtCombo = $("#districtId");
 
-        stateCombo.change(function () {
+        stateCombo.on("change",function () {
             var valueState = stateCombo.val();
             var url = "/city/combo/" + valueState;
             $.get(url,function(data){
-                cityCombo.attr({"disabled":false});
-                cityCombo.html(data);
+                if(data.length){
+                    cityCombo.attr({"disabled":false});
+                    cityCombo.html(data);
+                }else{
+                    cityCombo.attr({"disabled":true});
+                    cityCombo.html("<option> -- Selecione um estado -- </option>");
+                }
+                cityCombo.trigger("change");
             })
         })
 
+        cityCombo.on("change",function(){
+            var valueCity = cityCombo.val();
+            var url = "/district/combo/" + valueCity;
+            $.get(url,function(data){
+                if(data.length){
+                    districtCombo.attr({"disabled":false});
+                    districtCombo.html(data);
+                }else{
+                    districtCombo.attr({"disabled":true});
+                    districtCombo.html("<option> -- Selecione uma cidade -- </option>");
+                }
 
+            });
+        });
 
     });
 </script>

@@ -55,7 +55,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User findById(String id) {
-        return findById(id);
+        return repository.findOne(id);
     }
 
     @Override

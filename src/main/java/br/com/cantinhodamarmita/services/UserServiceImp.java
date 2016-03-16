@@ -2,6 +2,8 @@ package br.com.cantinhodamarmita.services;
 
 
 import br.com.cantinhodamarmita.daos.UserDao;
+import br.com.cantinhodamarmita.entitys.Address;
+import br.com.cantinhodamarmita.entitys.AddressDto;
 import br.com.cantinhodamarmita.entitys.UpdatePasswordDto;
 import br.com.cantinhodamarmita.entitys.User;
 import br.com.cantinhodamarmita.exceptions.AuthenticationCredentialsNotPresent;
@@ -9,7 +11,6 @@ import br.com.cantinhodamarmita.validators.UniqueValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,15 +22,19 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class UserServiceImp implements UserService, UniqueValidatorService, UserDetailsService {
 
     private UserDao userDao;
+    private AddressService addressService;
 
     @Autowired
-    public UserServiceImp(UserDao userDao) {
+    public UserServiceImp(UserDao userDao, AddressService addressService) {
         this.userDao = userDao;
+        this.addressService = addressService;
     }
 
     @Override
@@ -77,6 +82,27 @@ public class UserServiceImp implements UserService, UniqueValidatorService, User
             logout(request,response);
         }
         return deleted;
+    }
+
+    @Override
+    public void addAdress(User user, AddressDto addressDto) {
+        Address address = addressService.getAddressFrom(addressDto);
+        List<Address> addresses = user.getAddresses();
+        if(addresses != null){
+            addresses.add(address);
+        }else{
+            addresses = Arrays.asList(address);
+        }
+        user.setAddresses(addresses);
+        userDao.save(user);
+    }
+
+    @Override
+    public boolean removeAddress(User user, int addressPosition) {
+        user = userDao.findById(user.getId());
+        user.getAddresses().remove(addressPosition);
+        user = userDao.save(user);
+        return user != null;
     }
 
     @Override

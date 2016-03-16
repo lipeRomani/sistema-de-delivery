@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+
+</head>
+<body>
+
+    <select>
+        <option th:fragment="options-districts" th:if="${districts != null}" th:each="d : ${districts}" th:value="${d.id}" th:text="${d.name}"></option>
+    </select>
+
+</body>
+</html>

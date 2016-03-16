@@ -14,7 +14,7 @@
             <hr />
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="list-group">
                 <a class="list-group-item" href="#" th:href="@{/add/address}"><span class="glyphicon glyphicon-home"></span>  Adicionar endereço</a>
                 <a class="list-group-item" href="#" th:href="@{/update/me}"><span class="glyphicon glyphicon-pencil"></span> Editar Meus dados</a>
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-8">
             <table class="table table-bordered">
                 <tr>
                     <td>Nome: </td>
@@ -47,13 +47,39 @@
                     <td th:text="${#temporals.format(user.birthDate,'dd/MM/yyyy')}"></td>
                 </tr>
             </table>
+
+            <h2>Endereços cadastrados</h2>
+            <hr />
+            <p th:if="${user.addresses == null or #lists.size(user.addresses) == 0}" th:text="'Você ainda não possui endereço cadastrado.'"></p>
+            <div class="row">
+                <div class="col-md-4" th:if="${user.addresses != null}" th:each="address,status : ${user.addresses}">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <div class="ws-text-address">
+                                <h3 th:text="${address.name}">Address Name </h3>
+                                <p th:text="${address.type.description}"></p>
+                                <hr class="divider" />
+                                <p th:text="${address.street + ', ' + address.number}"></p>
+                                <p th:text="${address.district.name + ', ' + address.cityName + '/' + address.stateName}"></p>
+                                <p th:text="${address.complement}"></p>
+                            </div>
+                            <hr class="divider" />
+                            <form th:action="@{/remove/me/address}" method="post">
+                                <input type="hidden" th:value="${status.index}" name="position" id="position" />
+                                <button type="submit" class="btn btn-danger" role="button" onclick="return confirm('Deseja realmente deletar este endereço?')">Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
 </body>
 </html>
 
-<!-- Modal -->
+<!-- Modal remover conta -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -77,5 +103,22 @@
 <script>
     $("#excluir").click(function(){
         window.location.href = "/remove/me";
+    });
+</script>
+
+<script>
+    //set equal height in all thumb
+    var maxH = 0;
+    var maxHCaption = 0;
+    $(".thumbnail").each(function(i,value){
+        var elementH = $(this).height();
+        var elementCaptionH = $(".ws-text-address").eq(i).height();
+
+        if(elementH > maxH) maxH = elementH;
+        if(elementCaptionH > maxHCaption) maxHCaption = elementCaptionH;
+    })
+    $(".thumbnail").each(function(i,value){
+        $(this).height(maxH);
+        $(".ws-text-address").eq(i).height(maxHCaption);
     });
 </script>

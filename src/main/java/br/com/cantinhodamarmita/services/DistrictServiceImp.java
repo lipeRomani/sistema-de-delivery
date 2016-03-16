@@ -1,5 +1,6 @@
 package br.com.cantinhodamarmita.services;
 
+import br.com.cantinhodamarmita.daos.DistrictDao;
 import br.com.cantinhodamarmita.entitys.City;
 import br.com.cantinhodamarmita.entitys.District;
 import br.com.cantinhodamarmita.repositories.DistrictRepository;
@@ -16,14 +17,11 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 @Service
 public class DistrictServiceImp implements DistrictService {
 
-    private DistrictRepository districtRepository;
-
-    private MongoOperations mongoOperations;
+    DistrictDao dao;
 
     @Autowired
-    public DistrictServiceImp(DistrictRepository districtRepository, MongoOperations mongoOperations) {
-        this.districtRepository = districtRepository;
-        this.mongoOperations = mongoOperations;
+    public DistrictServiceImp(DistrictDao dao) {
+        this.dao = dao;
     }
 
     @Override
@@ -32,9 +30,8 @@ public class DistrictServiceImp implements DistrictService {
     }
 
     @Override
-    public List<District> getAllByCity(City city) {
-        Query query = query(where("city.$id").is(city.getName()));
-        return mongoOperations.find(query,District.class);
+    public List<District> getAllByCityName(String city) {
+        return dao.findByCityName(city);
     }
 
     @Override

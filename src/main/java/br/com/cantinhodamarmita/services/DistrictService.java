@@ -9,7 +9,7 @@ import java.util.List;
 public interface DistrictService {
 
     District save(District district);
-    List<District> getAllByCity(City city);
+    List<District> getAllByCityName(String city);
     void delete(District district);
     District update (District district);
     District findOne(String id);

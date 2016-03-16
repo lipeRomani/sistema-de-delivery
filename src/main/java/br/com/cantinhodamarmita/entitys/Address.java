@@ -10,21 +10,42 @@ import javax.validation.constraints.NotNull;
 
 public class Address {
 
-    @NotBlank
+    private String name;
     private String number;
-    @NotBlank
     private String street;
-    @NotBlank
     private String complement;
-    @NotNull
+    private String cep;
     @DBRef private District district;
     private String stateName;
     private String cityName;
     private String districtName;
+    private Type type;
 
+
+    public Address(String name, String number, String street, String complement, String cep, District district, String stateName, String cityName, String districtName, Type type) {
+        this();
+        this.name = name;
+        this.number = number;
+        this.street = street;
+        this.complement = complement;
+        this.cep = cep;
+        this.district = district;
+        this.stateName = stateName;
+        this.cityName = cityName;
+        this.districtName = districtName;
+        this.type = type;
+    }
 
     public Address(){
         this.district = new District();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getNumber() {
@@ -81,5 +102,35 @@ public class Address {
 
     public void setDistrictName(String districtName) {
         this.districtName = districtName;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public enum Type{
+        COMMERCIAL("Comercial"), RESIDENCE("Residencial"), VACATION("Turismo");
+
+        private String description;
+
+        private Type(String description){
+            this.description = description;
+        }
+
+        public String getDescription(){
+            return description;
+        }
     }
 }
